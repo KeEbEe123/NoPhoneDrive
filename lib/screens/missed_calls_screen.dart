@@ -1,31 +1,48 @@
 import 'package:flutter/material.dart';
-import '../services/api_service.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class MissedCallsScreen extends StatelessWidget {
-  final ApiService apiService = ApiService();
+class MissedCallsScreen extends StatefulWidget {
+  @override
+  _MissedCallsScreenState createState() => _MissedCallsScreenState();
+}
+
+class _MissedCallsScreenState extends State<MissedCallsScreen> {
+  List missedCalls = [];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchMissedCalls();
+  }
+
+  Future<void> fetchMissedCalls() async {
+    final response = await http.get(
+      Uri.parse('https://your-backend.com/api/missed-calls'),
+    );
+    if (response.statusCode == 200) {
+      setState(() {
+        missedCalls = jsonDecode(response.body);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Missed Calls')),
-      body: FutureBuilder<List<dynamic>>(
-        future: apiService.getMissedCalls('user-id'),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          }
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Text('No missed calls');
-          }
-          return ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              final call = snapshot.data![index];
-              return ListTile(
-                title: Text(call['caller']),
-                subtitle: Text(call['time']),
-              );
-            },
+      appBar: AppBar(title: Text('Missed Calls & Messages')),
+      body: ListView.builder(
+        itemCount: missedCalls.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(
+              missedCalls[index]['name'] ?? missedCalls[index]['number'],
+            ),
+            subtitle: Text(
+              DateTime.fromMillisecondsSinceEpoch(
+                missedCalls[index]['timestamp'],
+              ).toString(),
+            ),
           );
         },
       ),

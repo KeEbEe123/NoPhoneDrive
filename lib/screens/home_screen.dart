@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:do_not_disturb/do_not_disturb.dart';
 import '../services/dnd_service.dart';
 import '../services/location_service.dart';
+import 'missed_calls_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -109,6 +109,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     }),
                 child: const Text("Grant DND Permission"),
               ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => MissedCallsScreen()),
+                );
+              },
+              child: Text("View Missed Calls"),
+            ),
           ],
         ),
       ),

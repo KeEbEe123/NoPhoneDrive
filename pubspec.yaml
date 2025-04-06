@@ -40,6 +40,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   permission_handler: ^11.4.0
   do_not_disturb: ^1.0.3
+  flutter_background_service: ^5.1.0
+  call_log: ^5.0.1
 
 dev_dependencies:
   flutter_test:

@@ -14,6 +14,8 @@
     android:name="com.lyokone.location.FlutterLocationService"
     android:permission="android.permission.FOREGROUND_SERVICE"
     android:foregroundServiceType="location" />
+    <service android:name="id.flutter.flutter_background_service.BackgroundService" android:foregroundServiceType="location"/>
+
 
         <activity
             android:name=".MainActivity"
